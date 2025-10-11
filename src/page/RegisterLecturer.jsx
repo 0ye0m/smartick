@@ -4,7 +4,7 @@ import Input from "../component/Input";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import Footer from "../component/Footer";
-import Logo from "../assets/smartick.png";
+import Logo from "../assets/smartickk.png";
 import registerImg from "../assets/registerImg.jpg";
 
 const RegisterLecturer = () => {
@@ -80,7 +80,7 @@ const RegisterLecturer = () => {
         className="px-6 lg:px-20 py-8 h-screen overflow-auto flex flex-col justify-center"
       >
         <div className="flex flex-col items-center mb-8">
-          <img src={Logo} alt="smartick Logo" className="h-24 w-24 object-contain" />
+          <img src={Logo} alt="smartickk Logo" className="h-24 w-24 object-contain" />
           <h2 className="text-[#000D46] font-bold text-3xl mt-4">
             Create Account
           </h2>

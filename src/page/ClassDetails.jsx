@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import LogoutButton from "../component/LogoutButton";
 import useUserDetails from "../hooks/useUserDetails";
-import logo from "../assets/smartick.png"; 
+import logo from "../assets/smartickk.png"; 
 import Footer from "../component/Footer";
 
 const ClassDetails = () => {
@@ -17,7 +17,7 @@ const ClassDetails = () => {
       {/* Main Content */}
       <div className="flex flex-col gap-y-10 justify-center items-center flex-1">
         <div className="flex flex-col items-center">
-          <img src={logo} alt="smartick Logo" className="h-24 w-24 object-contain" />
+          <img src={logo} alt="smartickk Logo" className="h-24 w-24 object-contain" />
           <h2 className="text-center font-bold text-neutral-800 mt-4 lg:text-4xl md:text-3xl text-2xl">
             Welcome, {userDetails?.fullName || "Student"}
           </h2>

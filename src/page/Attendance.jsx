@@ -7,7 +7,7 @@ import { supabase } from "../utils/supabaseClient";
 import toast from "react-hot-toast";
 import Spinner from "../component/Spinner";
 import dayjs from "dayjs";
-import logo from "../assets/smartick.png"; // use assets folder
+import logo from "../assets/smartickk.png"; // use assets folder
 
 const Attendance = () => {
   const location = useLocation();
@@ -137,10 +137,10 @@ const Attendance = () => {
     <section className="attendance h-screen grid place-items-center bg-gray-50">
       <div className="bg-white px-6 py-6 md:px-16 max-w-3xl rounded-xl shadow-lg w-full">
         <div className="flex justify-center mb-4">
-          <img src={logo} alt="smartick Logo" className="h-20 w-20 object-contain" />
+          <img src={logo} alt="smartickk Logo" className="h-20 w-20 object-contain" />
         </div>
         <h2 className="text-3xl text-[#000D46] text-center font-bold mb-4">
-          smartick
+          smartickk
         </h2>
 
         {classDetails && (

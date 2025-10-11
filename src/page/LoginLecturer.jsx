@@ -5,7 +5,7 @@ import Input from "../component/Input";
 import Spinner from "../component/Spinner";
 import toast from "react-hot-toast";
 import Footer from "../component/Footer";
-import Logo from "../assets/smartick.png";
+import Logo from "../assets/smartickk.png";
 import loginImg from "../assets/LoginLecturer.jpg";
 
 const LoginLecturer = () => {
@@ -42,7 +42,7 @@ const LoginLecturer = () => {
       {/* Left Panel */}
       <div className="px-6 lg:px-20 py-8 flex flex-col justify-center h-screen overflow-auto">
         <div className="flex flex-col items-center mb-8">
-          <img src={Logo} alt="smartick Logo" className="h-24 w-24 object-contain" />
+          <img src={Logo} alt="smartickk Logo" className="h-24 w-24 object-contain" />
           <h2 className="text-[#000D46] font-bold text-3xl mt-4">
             Welcome Back!
           </h2>

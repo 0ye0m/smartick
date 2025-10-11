@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import logo from "../assets/smartick.png";
+import logo from "../assets/smartickk.png";
 import Footer from "../component/Footer";
 
 const LandingPage = () => {
@@ -8,11 +8,11 @@ const LandingPage = () => {
       <section className="h-screen w-full grid place-items-center px-6 bg-gray-50">
         <div className="text-center">
           <div className="flex justify-center mb-6">
-            <img src={logo} alt="smartick Logo" className="h-24 w-24 object-contain" />
+            <img src={logo} alt="smartickk Logo" className="h-24 w-24 object-contain" />
           </div>
 
           <h1 className="text-3xl md:text-4xl font-bold text-black mb-2">
-            Welcome to smartick
+            Welcome to smartickk
           </h1>
           <h2 className="text-lg md:text-xl text-gray-700 mb-6">
             Register or Login

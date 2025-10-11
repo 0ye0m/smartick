@@ -3,7 +3,7 @@ import Input from "../component/Input";
 import MapModal from "../component/MapModal";
 import QRCodeModal from "../component/QRCodeModal";
 import scheduleImg from "../assets/scheduleImg.jpg";
-import logo from "../assets/smartick.png";
+import logo from "../assets/smartickk.png";
 import { supabase } from "../utils/supabaseClient";
 import useUserDetails from "../hooks/useUserDetails";
 import toast from "react-hot-toast";
@@ -124,7 +124,7 @@ const ClassSchedule = () => {
 
           <div className="w-full max-w-2xl h-[90vh] overflow-y-auto mt-4">
             <div className="flex justify-center items-center mb-4">
-              <img src={logo} alt="smartick Logo" className="h-24 w-24 object-contain" />
+              <img src={logo} alt="smartickk Logo" className="h-24 w-24 object-contain" />
             </div>
 
             <p className="text-sm text-neutral-600 text-center mb-4">

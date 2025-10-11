@@ -6,9 +6,9 @@ const Footer = () => {
       <div className="flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto gap-8">
         {/* Left Section */}
         <div className="text-center md:text-left">
-          <h2 className="font-bold text-lg text-black pb-2">smartick</h2>
+          <h2 className="font-bold text-lg text-black pb-2">smartickk</h2>
           <p className="text-sm max-w-sm">
-            smartick is a platform that allows you to create class schedules and
+            smartickk is a platform that allows you to create class schedules and
             take student attendance efficiently.
           </p>
         </div>
@@ -17,7 +17,7 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6 text-center md:text-left">
           <img
             src={logo}
-            alt="smartick Logo"
+            alt="smartickk Logo"
             className="h-20 w-20 object-contain"
           />
           <div className="text-xs">
