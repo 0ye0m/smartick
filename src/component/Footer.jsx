@@ -30,11 +30,11 @@ const Footer = () => {
             <p className="pb-1">
               <span className="font-bold">Name:</span> Akshay Mangalkar
             </p>
-            <p className="pb-1">
-              <span className="font-bold">Name:</span> Rohit Pande
-            </p>
             <p>
               <span className="font-bold">Roll No.:</span> 04
+            </p>
+            <p className="pb-1">
+              <span className="font-bold">Name:</span> Rohit Pande
             </p>
             <p>
               <span className="font-bold">Roll No.:</span> 
