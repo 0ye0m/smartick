@@ -22,17 +22,22 @@ const Footer = () => {
           />
           <div className="text-xs">
             <p className="pb-2">
-              In partial fulfillment of final year project, Federal University
-              of Technology, Akure
+              In Partial Fulfillment of Final Year Data Science Project, G H Raisoni College of Arts, Commerce, Science Nagpur
             </p>
             <p className="pb-2">
-              Department of Information Technology, School of Computing
+              Department of Data Science
             </p>
             <p className="pb-1">
-              <span className="font-bold">Name:</span> Ozioko Ogechi Maureen
+              <span className="font-bold">Name:</span> Akshay Mangalkar
+            </p>
+            <p className="pb-1">
+              <span className="font-bold">Name:</span> Rohit Pande
             </p>
             <p>
-              <span className="font-bold">Matric:</span> IFT/18/6029
+              <span className="font-bold">Roll No.:</span> 04
+            </p>
+            <p>
+              <span className="font-bold">Roll No.:</span> 
             </p>
           </div>
         </div>

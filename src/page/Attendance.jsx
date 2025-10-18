@@ -7,7 +7,7 @@ import { supabase } from "../utils/supabaseClient";
 import toast from "react-hot-toast";
 import Spinner from "../component/Spinner";
 import dayjs from "dayjs";
-import logo from "../assets/smartickk.png"; // use assets folder
+import logo from "../assets/smartickk.png";
 
 const Attendance = () => {
   const location = useLocation();
