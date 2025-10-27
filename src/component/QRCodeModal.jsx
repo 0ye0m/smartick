@@ -2,7 +2,7 @@
 import { QRCodeSVG } from "qrcode.react";
 
 const QRCodeModal = ({ qrData, onClose }) => {
-  if (!qrData) return null; // Prevent rendering without data
+  if (!qrData) return null; 
 
   return (
     <div
