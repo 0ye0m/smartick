@@ -81,10 +81,10 @@ const Attendance = () => {
 
     setIsLoading(true);
 
-    // Fetch current attendees
+    // Fetch current attendance
     const { data, error } = await supabase
       .from("classes")
-      .select("attendees")
+      .select("attendance")
       .eq("course_id", courseId)
       .single();
 
@@ -94,10 +94,10 @@ const Attendance = () => {
       return;
     }
 
-    const attendees = data?.attendees || [];
+    const attendance = data?.attendance || [];
 
     // Check if matric number already exists
-    const matricExists = attendees.some(
+    const matricExists = attendance.some(
       (attendee) => attendee.matric_no === matricNumber.trim().toUpperCase()
     );
 
@@ -113,11 +113,11 @@ const Attendance = () => {
       timestamp: new Date().toISOString(),
     };
 
-    const updatedAttendees = [...attendees, newAttendee];
+    const updatedattendance = [...attendance, newAttendee];
 
     const { error: updateError } = await supabase
       .from("classes")
-      .update({ attendees: updatedAttendees })
+      .update({ attendance: updatedattendance })
       .eq("course_id", courseId);
 
     if (updateError) {

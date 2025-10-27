@@ -21,9 +21,10 @@ const PreviousClass = () => {
     setIsLoading(true);
 
     const { data, error } = await supabase
-      .from("classes")
-      .select("*")
-      .eq("lecturer_id", lecturerId);
+  .from("classes")
+  .select("*, attendance, lecturer:lecturer_id(fullName, email)")
+  .eq("lecturer_id", lecturerId);
+
 
     if (error) {
       toast.error(`Error fetching classes: ${error.message}`);

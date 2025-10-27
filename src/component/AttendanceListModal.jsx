@@ -6,15 +6,15 @@ import * as XLSX from "xlsx";
 const AttendanceListModal = ({ isOpen, selectedClass, onClose }) => {
   if (!isOpen || !selectedClass) return null;
 
-  const attendees = selectedClass.attendees || [];
+  const attendance = selectedClass.attendance || [];
 
-  // Export to CSV
+  // 🧾 Export to CSV
   const exportToCSV = () => {
-    if (attendees.length === 0) return;
+    if (attendance.length === 0) return;
 
     const csvRows = [
       ["Name", "Matric No", "Attended At"],
-      ...attendees.map((attendee) => [
+      ...attendance.map((attendee) => [
         attendee.name,
         attendee.matric_no,
         new Date(attendee.timestamp).toLocaleString([], {
@@ -32,12 +32,12 @@ const AttendanceListModal = ({ isOpen, selectedClass, onClose }) => {
     saveAs(blob, `attendance_list_${new Date().toISOString()}.csv`);
   };
 
-  // Export to Excel
+  // 📘 Export to Excel
   const exportToExcel = () => {
-    if (attendees.length === 0) return;
+    if (attendance.length === 0) return;
 
     const ws = XLSX.utils.json_to_sheet(
-      attendees.map((attendee) => ({
+      attendance.map((attendee) => ({
         Name: attendee.name,
         Matric_No: attendee.matric_no,
         Attended_At: new Date(attendee.timestamp).toLocaleString([], {
@@ -52,8 +52,8 @@ const AttendanceListModal = ({ isOpen, selectedClass, onClose }) => {
 
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Attendance");
-
     const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+
     const blob = new Blob([wbout], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
@@ -63,9 +63,21 @@ const AttendanceListModal = ({ isOpen, selectedClass, onClose }) => {
   return (
     <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg p-6 w-full max-w-lg relative h-[80vh] overflow-hidden shadow-lg">
-        <h2 className="text-xl font-bold underline mb-4 text-black">
+        <h2 className="text-xl font-bold underline mb-2 text-black text-center">
           Attendance List
         </h2>
+
+        {/* Lecturer Info */}
+        {selectedClass.lecturer && (
+          <div className="mb-4 text-sm text-gray-800 text-center">
+            <p>
+              <strong>Lecturer:</strong> {selectedClass.lecturer.fullName}
+            </p>
+            <p>
+              <strong>Email:</strong> {selectedClass.lecturer.email}
+            </p>
+          </div>
+        )}
 
         {/* Close button */}
         <button
@@ -91,10 +103,10 @@ const AttendanceListModal = ({ isOpen, selectedClass, onClose }) => {
           </button>
         </div>
 
-        {/* Attendees list */}
+        {/* Attendance List */}
         <div className="overflow-y-auto max-h-[60vh] pr-2 scrollbar-hidden">
-          {attendees.length > 0 ? (
-            attendees.map((attendee, index) => {
+          {attendance.length > 0 ? (
+            attendance.map((attendee, index) => {
               const formattedTimestamp = new Date(
                 attendee.timestamp
               ).toLocaleString([], {
@@ -128,7 +140,9 @@ const AttendanceListModal = ({ isOpen, selectedClass, onClose }) => {
               );
             })
           ) : (
-            <p className="text-gray-700">No attendees found for this class.</p>
+            <p className="text-gray-700 text-center">
+              No attendance found for this class.
+            </p>
           )}
         </div>
       </div>
