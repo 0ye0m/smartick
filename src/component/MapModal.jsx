@@ -6,14 +6,13 @@ import {
   TileLayer,
   Marker,
   Popup,
-  useMap,
   useMapEvents,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import axios from "axios";
 import L from "leaflet";
 
-// 🧭 Fix default marker icon (needed for Leaflet + React)
+// 🧭 Fix Leaflet default marker icons
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl:
@@ -24,7 +23,7 @@ L.Icon.Default.mergeOptions({
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
 });
 
-// 🎯 Default allowed location
+// 🎯 Default map location
 const DEFAULT_LOCATION = {
   lat: 21.1592,
   lng: 79.0806,
@@ -38,7 +37,7 @@ const MapModal = ({ onClose, onSelectLocation }) => {
   const mapRef = useRef(null);
   const markerRef = useRef(null);
 
-  // 🗺 Reverse geocoding with User-Agent header (prevents rate-limit)
+  // 🔄 Reverse geocoding (lat → name)
   const reverseGeocode = async (lat, lon) => {
     try {
       const response = await axios.get(
@@ -57,24 +56,23 @@ const MapModal = ({ onClose, onSelectLocation }) => {
     }
   };
 
-  // 📍 Handle map click (manual selection)
+  // 🖱 Map click handler
   const MapClickHandler = () => {
-    const map = useMap();
     useMapEvents({
       click: async (e) => {
         const { lat, lng } = e.latlng;
-        setSelectedPosition({ lat, lng });
         const name = await reverseGeocode(lat, lng);
+        setSelectedPosition({ lat, lng });
         setLocationName(name);
         onSelectLocation(name, { lat, lng });
-        map.flyTo([lat, lng], 15);
+        if (mapRef.current) mapRef.current.flyTo([lat, lng], 15);
         if (markerRef.current) markerRef.current.openPopup();
       },
     });
     return null;
   };
 
-  // 📡 Detect user's current location
+  // 📡 Detect user location
   const handleDetectLocation = () => {
     if (!navigator.geolocation) {
       toast.error("Geolocation is not supported by your browser.");
@@ -86,8 +84,14 @@ const MapModal = ({ onClose, onSelectLocation }) => {
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         const { latitude, longitude, accuracy } = position.coords;
-
-        console.log("Detected position:", latitude, longitude, "±", accuracy, "m");
+        console.log(
+          "Detected position:",
+          latitude,
+          longitude,
+          "±",
+          accuracy,
+          "m"
+        );
 
         const name = await reverseGeocode(latitude, longitude);
         const newPosition = { lat: latitude, lng: longitude };
@@ -96,18 +100,20 @@ const MapModal = ({ onClose, onSelectLocation }) => {
         setLocationName(name);
         onSelectLocation(name, newPosition);
 
-        // Move map to user's location smoothly
+        // Fly to location only if map loaded
         if (mapRef.current) {
           mapRef.current.flyTo([latitude, longitude], 15, {
             animate: true,
             duration: 1.5,
           });
+
+          // Re-center after animation
           setTimeout(() => {
             mapRef.current.setView([latitude, longitude], 15);
           }, 1600);
         }
 
-        // Open popup after animation
+        // Show popup
         setTimeout(() => {
           if (markerRef.current) markerRef.current.openPopup();
         }, 1700);
@@ -122,10 +128,10 @@ const MapModal = ({ onClose, onSelectLocation }) => {
             toast.error("Location access denied by user.");
             break;
           case error.POSITION_UNAVAILABLE:
-            toast.error("Location information is unavailable.");
+            toast.error("Location information unavailable.");
             break;
           case error.TIMEOUT:
-            toast.error("Location request timed out. Please try again.");
+            toast.error("Location request timed out.");
             break;
           default:
             toast.error("Unable to detect your location.");
@@ -133,13 +139,13 @@ const MapModal = ({ onClose, onSelectLocation }) => {
       },
       {
         enableHighAccuracy: true,
-        timeout: 20000, // ⏱ Increased from 10s → 20s for reliability
+        timeout: 20000,
         maximumAge: 0,
       }
     );
   };
 
-  // ✅ Confirm button handler
+  // ✅ Confirm button
   const handleConfirm = () => {
     if (selectedPosition) {
       onSelectLocation(locationName, selectedPosition);
@@ -148,17 +154,17 @@ const MapModal = ({ onClose, onSelectLocation }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white p-4 rounded-lg w-4/5 h-4/5 shadow-lg flex flex-col relative">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <div className="bg-white p-4 rounded-lg w-4/5 h-4/5 shadow-xl flex flex-col relative">
         <h2 className="sm:text-xl text-base text-neutral-700 font-bold mb-4 text-center">
           Select or Detect Location
         </h2>
 
-        {/* Map Section */}
+        {/* 🌍 Map Container */}
         <div className="relative flex-1">
           {detectLoading && (
-            <div className="absolute inset-0 z-[1000] flex items-center justify-center bg-white bg-opacity-70">
-              <div className="loader border-4 border-blue-500 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
+            <div className="absolute inset-0 z-[1000] flex items-center justify-center bg-white/70">
+              <div className="loader w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
             </div>
           )}
 
@@ -180,17 +186,17 @@ const MapModal = ({ onClose, onSelectLocation }) => {
             </Marker>
           </MapContainer>
 
-          {/* Detect My Location button */}
+          {/* 📍 Detect location button */}
           <button
             onClick={handleDetectLocation}
-            className="absolute top-4 right-4 z-[1100] bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700"
+            className="absolute top-4 right-4 z-[1100] bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700 transition"
             disabled={detectLoading}
           >
             {detectLoading ? "Locating..." : "Detect My Location"}
           </button>
         </div>
 
-        {/* Action buttons */}
+        {/* Footer buttons */}
         <div className="mt-4 flex justify-between">
           <button
             onClick={onClose}
@@ -208,19 +214,18 @@ const MapModal = ({ onClose, onSelectLocation }) => {
           </button>
         </div>
 
-        {/* Selected location text */}
+        {/* 📍 Display selected location */}
         {selectedPosition && (
           <p className="my-2 text-neutral-800 sm:text-base text-sm text-center">
             <b>Selected:</b> {locationName}
           </p>
         )}
 
-        {/* Loader CSS */}
         <style>{`
           .loader {
             border-width: 4px;
             border-style: solid;
-            border-color: blue transparent transparent transparent;
+            border-color: #3b82f6 transparent transparent transparent;
           }
         `}</style>
       </div>
