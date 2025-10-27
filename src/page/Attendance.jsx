@@ -1,4 +1,3 @@
-
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { calculateDistance } from "../utils/distanceCalculation";
@@ -58,7 +57,7 @@ const Attendance = () => {
 
             const distance = calculateDistance(userLat, userLng, lat, lng);
             setUserDistance(distance);
-            setIsWithinRange(distance <= 20);
+            setIsWithinRange(distance <= 60);
           },
           (error) => {
             toast.error(`Error getting location: ${error.message}`);
@@ -145,25 +144,34 @@ const Attendance = () => {
 
         {classDetails && (
           <div className="bg-gray-100 p-4 rounded mb-6">
-            <p className="text-[#000D46] font-bold">Title: {classDetails.course_title}</p>
+            <p className="text-[#000D46] font-bold">
+              Title: {classDetails.course_title}
+            </p>
             <p className="text-[#000D46] font-bold">Code: {courseCode}</p>
-            <p className="text-[#000D46] font-bold">Venue: {classDetails.location_name}</p>
+            <p className="text-[#000D46] font-bold">
+              Venue: {classDetails.location_name}
+            </p>
             <p className="text-[#000D46] font-bold">
               Date: {dayjs(classDetails.date).format("DD MMMM, YYYY")}
             </p>
             <p className="text-[#000D46] font-bold">
-              Time: {new Date(classDetails.time).toLocaleTimeString([], {
+              Time:{" "}
+              {new Date(classDetails.time).toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
                 hour12: true,
               })}
             </p>
             {classDetails.note && (
-              <p className="text-[#000D46] font-bold mb-2">Note: {classDetails.note}</p>
+              <p className="text-[#000D46] font-bold mb-2">
+                Note: {classDetails.note}
+              </p>
             )}
-            <p>
+            <p className="text-[#000D46] font-semibold">
               Distance to Lecture Venue:{" "}
-              {userDistance !== null ? `${userDistance.toFixed(2)} meters` : "Calculating..."}
+              {userDistance !== null
+                ? `${userDistance.toFixed(2)} meters`
+                : "Calculating..."}
             </p>
           </div>
         )}
@@ -198,7 +206,7 @@ const Attendance = () => {
             </button>
           ) : (
             <p className="text-xs text-red-500 pt-2">
-              You must be within 20 meters of the lecture venue to register.
+              You must be within 60 meters of the lecture venue to register.
             </p>
           )}
         </form>
