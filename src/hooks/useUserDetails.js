@@ -9,50 +9,56 @@ const useUserDetails = () => {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
+        // Get current session
         const {
           data: { session },
           error: sessionError,
         } = await supabase.auth.getSession();
 
-        if (sessionError) {
-          throw sessionError;
+        if (sessionError) throw sessionError;
+
+        // Check if user is logged in
+        if (!session || !session.user) {
+          setError("User is not logged in.");
+          return;
         }
 
-        if (session && session.user) {
-          const userEmail = session.user.email;
+        const userEmail = session.user.email;
 
-          const { data: userData, error: userError } = await supabase
-            .from("lecturers")
-            .select("*")
-            .eq("email", userEmail)
-            .single();
+        // Fetch lecturer details from Supabase
+        const { data: userData, error: userError } = await supabase
+          .from("lecturers")
+          .select("id, fullName, email, phone_number, created_at")
+          .eq("email", userEmail)
+          .single();
 
-          if (userError) {
-            if (userError.code === "PGRST116") {
-              setError("User details not found.");
-            } else {
-              throw userError;
-            }
-          } else if (userData) {
-            setUserDetails(userData);
+        if (userError) {
+          if (userError.code === "PGRST116") {
+            setError("Lecturer not found in the database.");
+          } else {
+            throw userError;
           }
-        } else {
-          setError("User is not logged in.");
+        } else if (userData) {
+          // ✅ Store user details in a clean structure
+          setUserDetails({
+            lecturer_id: userData.id, // important for linking with classes
+            fullName: userData.fullName,
+            email: userData.email,
+            phone_number: userData.phone_number,
+            created_at: userData.created_at,
+          });
         }
       } catch (error) {
+        console.error("Error fetching user details:", error);
         toast.error(
-          `${`${
-            error.message === "TypeError: Failed to fetch"
-              ? "Please, check your Internet connection"
-              : error.message
-          }`}`
+          error.message === "TypeError: Failed to fetch"
+            ? "Please check your Internet connection."
+            : error.message
         );
         setError(
-          `${
-            error.message === "TypeError: Failed to fetch"
-              ? "Please, check your Internet connection"
-              : error.message
-          }`
+          error.message === "TypeError: Failed to fetch"
+            ? "Please check your Internet connection."
+            : error.message
         );
       }
     };

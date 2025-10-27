@@ -13,7 +13,7 @@ import Footer from "../component/Footer";
 const VERCEL_URL = import.meta.env.VITE_VERCEL_URL;
 
 const ClassSchedule = () => {
-  const { userDetails } = useUserDetails();
+  const { userDetails, userDetailsError } = useUserDetails();
 
   const [formData, setFormData] = useState({
     courseTitle: "",
@@ -39,18 +39,21 @@ const ClassSchedule = () => {
     setSelectedLocationCoordinate(coordinate);
   };
 
-  const lecturerId = userDetails?.lecturer_id;
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!userDetails) {
+      toast.error("Please wait... Lecturer details not yet loaded.");
+      return;
+    }
 
     if (!selectedLocationCoordinate) {
       toast.error("Please select a lecture venue location.");
       return;
     }
 
-    const { courseTitle, courseCode, lectureVenue, time, date, note } =
-      formData;
+    const { courseTitle, courseCode, lectureVenue, time, date, note } = formData;
+    const lecturerId = userDetails.lecturer_id;
 
     const registrationLink = `${VERCEL_URL}/studentLogin?courseCode=${encodeURIComponent(
       courseCode
@@ -58,7 +61,6 @@ const ClassSchedule = () => {
       lectureVenue
     )}&lat=${selectedLocationCoordinate.lat}&lng=${selectedLocationCoordinate.lng}`;
 
-    // Save the data to Supabase
     const locationGeography = `SRID=4326;POINT(${selectedLocationCoordinate.lng} ${selectedLocationCoordinate.lat})`;
 
     const { data, error } = await supabase
@@ -71,8 +73,8 @@ const ClassSchedule = () => {
           date: new Date(date).toISOString(),
           location: locationGeography,
           note,
-          qr_code: registrationLink, // storing the registration link, QR can be generated from this link
-          lecturer_id: lecturerId,
+          qr_code: registrationLink,
+          lecturer_id: lecturerId, // ✅ now correctly filled
           location_name: lectureVenue,
         },
       ])
@@ -84,7 +86,7 @@ const ClassSchedule = () => {
       return;
     }
 
-    toast.success("Class schedule created successfully");
+    toast.success("Class schedule created successfully!");
 
     // Generate QR code modal
     const generatedCourseId = data[0]?.course_id;
@@ -112,7 +114,7 @@ const ClassSchedule = () => {
   return (
     <>
       <div className="flex flex-col md:flex-row min-h-[100vh] bg-gray-100">
-        {/* Left Section: Form */}
+        {/* Left Section */}
         <div className="w-full md:w-1/2 p-4 flex flex-col justify-center relative">
           <div>
             <Link to="/classDetails">
@@ -130,6 +132,12 @@ const ClassSchedule = () => {
             <p className="text-sm text-neutral-600 text-center mb-4">
               Schedule a class using the form below
             </p>
+
+            {userDetailsError && (
+              <p className="text-red-600 text-center mb-2">
+                {userDetailsError}
+              </p>
+            )}
 
             <form onSubmit={handleSubmit}>
               <Input
@@ -196,13 +204,13 @@ const ClassSchedule = () => {
                 type="submit"
                 className="w-full btn bg-blue-500 text-white hover:bg-blue-600 transition-colors mt-4"
               >
-                Generate QR Code
+                {userDetails ? "Generate QR Code" : "Loading Lecturer..."}
               </button>
             </form>
           </div>
         </div>
 
-        {/* Right Section: Image */}
+        {/* Right Section */}
         <div className="hidden md:flex w-1/2 h-screen items-center justify-center overflow-hidden">
           <img
             src={scheduleImg}
