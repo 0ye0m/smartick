@@ -57,7 +57,7 @@ const Attendance = () => {
 
             const distance = calculateDistance(userLat, userLng, lat, lng);
             setUserDistance(distance);
-            setIsWithinRange(distance <= 60);
+            setIsWithinRange(distance <= 100);
           },
           (error) => {
             toast.error(`Error getting location: ${error.message}`);
@@ -206,7 +206,7 @@ const Attendance = () => {
             </button>
           ) : (
             <p className="text-xs text-red-500 pt-2">
-              You must be within 60 meters of the lecture venue to register.
+              You must be within 100 meters of the lecture venue to register.
             </p>
           )}
         </form>
