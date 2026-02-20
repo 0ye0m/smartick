@@ -2,7 +2,7 @@ import { useState } from "react";
 import Input from "../component/Input";
 import MapModal from "../component/MapModal";
 import QRCodeModal from "../component/QRCodeModal";
-import scheduleImg from "../assets/scheduleImg.jpg";
+import scheduleImg from "../assets/scheduleImg.jpeg";
 import logo from "../assets/smartickk.png";
 import { supabase } from "../utils/supabaseClient";
 import useUserDetails from "../hooks/useUserDetails";
