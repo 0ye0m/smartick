@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <section className="w-full bg-white py-6 text-black px-4">
       <div className="flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto gap-8">
-        {/* Left Section */}
+        {/* Left */}
         <div className="text-center md:text-left">
           <h2 className="font-bold text-lg text-black pb-2">smartickk</h2>
           <p className="text-sm max-w-sm">
